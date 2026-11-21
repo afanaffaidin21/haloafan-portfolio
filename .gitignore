@@ -1,0 +1,22 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# reference material captured during the rebuild
+.ref
+
+# agent tooling and plan scratch
+.claude/
+.agents/
+.superpowers/
+
+# local env and payload artifacts
+.env
+.env.*
+!.env.example
+media/
+payload.db
+payload.db-*

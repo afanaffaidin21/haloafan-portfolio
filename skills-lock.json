@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "skills": {
+    "antislop": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop/SKILL.md",
+      "computedHash": "a18e70f1622437839f79911ca072b00498885e2465eeb7588e6e2aecccd7c820"
+    },
+    "antislop-code": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-code/SKILL.md",
+      "computedHash": "648f9f24b44a610626dcd1dbe52a2147c3f5f994c3e641b83aeab58404a09fa9"
+    },
+    "antislop-copywriting": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-copywriting/SKILL.md",
+      "computedHash": "3b84ee78a04288074ddf4e0eec27439708ad7980935eb959d5c808b64b24ef6f"
+    },
+    "antislop-human": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-human/SKILL.md",
+      "computedHash": "8098865a109ce7fae31c38cc1f4b48597b0bef26c4c07312da32255c5017e98d"
+    },
+    "antislop-layoutmobile": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-layoutmobile/SKILL.md",
+      "computedHash": "90c893982c197eb438a7136aee48d084da7e9210127670e924431d45fecc225e"
+    },
+    "antislop-ui": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-ui/SKILL.md",
+      "computedHash": "588c3a726f2054c0aa3335f61cea6a3a9e53b2821cafda40d25ebf8d1c37e59e"
+    },
+    "brainstorming": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/brainstorming/SKILL.md",
+      "computedHash": "a7424777b7f81e3eb9b4556d29fe233553736d8255780d3e1feea190fef61fef"
+    },
+    "cms-migration": {
+      "source": "payloadcms/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cms-migration/SKILL.md",
+      "computedHash": "9a74dc372db9c4ba5f6605b42f34959bf0907893e45fb061dbb2a8ceafd44bbc"
+    },
+    "payload": {
+      "source": "payloadcms/payload",
+      "sourceType": "github",
+      "skillPath": "packages/payload/skills/payload/SKILL.md",
+      "computedHash": "a3336a4c4480689f42edc02cc29c5abe1ec0a24b39f19fc2ac428c1a270556d9"
+    },
+    "subagent-driven-development": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/subagent-driven-development/SKILL.md",
+      "computedHash": "da0ad5e635b6ff70c2b6dbf25e51ae6ca1cad6beebfc61a791195675468c492e"
+    }
+  }
+}

@@ -1,0 +1,460 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Fonts — self-hosted, extracted from the reference (Switzer + Inter Display
+   + Manrope + Fragment Mono). Files live in /public/fonts.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/6XPIMU23OJVRY676OG5YVJMWEHWICATX.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/YS3VPNVO4B3TOJMEXDGFZQ4TLZGGSRZC.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/Y7SCNZJOT2MW5ADSGOFLDGH4TNL4JCQY.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/TOHQHMLIEIPKVF2JPM6SVKXFYGO5G2TJ.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/C6VLICDGQWYKV6YT65TM5G3OVN4AOZBN.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/IOAFMDAPNX3S6OL2GYQQJ2FFJIRSVB3N.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/A7AS3UPAGLC7MDVC67SBNTE5FGF2Z2RG.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/J7XVDQ2IJENINPUAVBDJNH3VEXVDSPQQ.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter Display";
+  src: url("/fonts/PfdOpgzFf7N2Uye9JX7xRKYTgSc.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter Display";
+  src: url("/fonts/qITWJ2WdG0wrgQPDb8lvnYnTXDg.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/JNU3GNMUBPWW6V6JTED3S27XL5HN7NM5.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/6P4FPMFQH7CCC7RZ4UU4NKSGJ2RLF7V5.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/K4ZMLVLHYIFVTTTWGVOTVGOFUUX7NVGI.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fragment Mono";
+  src: url("/fonts/4iCr6K5wfMRRjxp0DA6-2CLnB4NHhg.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   Design tokens — measured from the reference computed styles.
+   ========================================================================== */
+
+@theme {
+  --font-sans: "Switzer", Arial, sans-serif;
+  --font-price: "Inter Display", Arial, sans-serif;
+  --font-polar: "Manrope", Arial, sans-serif;
+  --font-mono: "Fragment Mono", monospace;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-green: #12b33f;
+
+  /* Semantic roles — mirrored in the .dark block below. */
+  --color-page: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f0f0f0;
+  --color-line: #dedede;
+  --color-ink: #000000;
+  --color-ink-2: #545454;
+  --color-ink-3: #828282;
+  --color-ink-4: #b8b8b8;
+  --color-invert: #000000;
+  --color-invert-ink: #ffffff;
+  --color-invert-ink-2: #828282;
+  --color-invert-ink-3: #b8b8b8;
+
+  --radius-pill: 1000px;
+  --radius-btn: 24px;
+  --radius-card: 16px;
+  --radius-tool: 12px;
+  --radius-nav: 32px;
+
+  --shadow-card: rgba(0, 0, 0, 0.07) 0 0.597144px 0.597144px -0.9375px,
+    rgba(0, 0, 0, 0.07) 0 1.81088px 1.81088px -1.875px,
+    rgba(0, 0, 0, 0.06) 0 4.78699px 4.78699px -2.8125px,
+    rgba(0, 0, 0, 0.03) 0 15px 15px -3.75px;
+  --shadow-pill: rgba(0, 0, 0, 0.18) 0 0.602187px 0.602187px -1.25px,
+    rgba(0, 0, 0, 0.16) 0 2.28853px 2.28853px -2.5px,
+    rgba(0, 0, 0, 0.06) 0 10px 10px -3.75px;
+  --shadow-btn: inset rgba(255, 255, 255, 0.4) 0 2px 4px 0,
+    rgba(0, 0, 0, 0.33) 0 0.740973px 0.740973px -0.75px,
+    rgba(0, 0, 0, 0.32) 0 2.01787px 2.01787px -1.5px,
+    rgba(0, 0, 0, 0.3) 0 4.43051px 4.43051px -2.25px,
+    rgba(0, 0, 0, 0.25) 0 9.83471px 9.83471px -3px,
+    rgba(0, 0, 0, 0.11) 0 25px 25px -3.75px,
+    rgb(84, 84, 84) 0 0 0 1px;
+  --shadow-btn-light: inset rgba(255, 255, 255, 0.4) 0 2px 4px 0,
+    rgba(0, 0, 0, 0.33) 0 0.740973px 0.740973px -0.75px,
+    rgba(0, 0, 0, 0.32) 0 2.01787px 2.01787px -1.5px,
+    rgba(0, 0, 0, 0.3) 0 4.43051px 4.43051px -2.25px,
+    rgba(0, 0, 0, 0.25) 0 9.83471px 9.83471px -3px,
+    rgba(0, 0, 0, 0.11) 0 25px 25px -3.75px,
+    rgb(130, 130, 130) 0 0 0 1px;
+
+  --ease-framer: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Framer's breakpoints, mapped onto Tailwind's: desktop starts at 992. */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+}
+
+/* Dark theme — unlayered so it outranks the @theme layer. */
+.dark {
+  color-scheme: dark;
+
+  --color-page: #0a0a0a;
+  --color-surface: #161616;
+  --color-surface-muted: #1e1e1e;
+  --color-line: #2e2e2e;
+  --color-ink: #fafafa;
+  --color-ink-2: #b8b8b8;
+  --color-ink-3: #9c9c9c;
+  --color-ink-4: #6b6b6b;
+  --color-invert: #fafafa;
+  --color-invert-ink: #0a0a0a;
+  --color-invert-ink-2: #545454;
+  --color-invert-ink-3: #6b6b6b;
+
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06),
+    rgba(0, 0, 0, 0.07) 0 0.597144px 0.597144px -0.9375px,
+    rgba(0, 0, 0, 0.07) 0 1.81088px 1.81088px -1.875px,
+    rgba(0, 0, 0, 0.06) 0 4.78699px 4.78699px -2.8125px,
+    rgba(0, 0, 0, 0.03) 0 15px 15px -3.75px;
+  --shadow-pill: 0 0 0 1px rgba(255, 255, 255, 0.06),
+    rgba(0, 0, 0, 0.18) 0 0.602187px 0.602187px -1.25px,
+    rgba(0, 0, 0, 0.16) 0 2.28853px 2.28853px -2.5px,
+    rgba(0, 0, 0, 0.06) 0 10px 10px -3.75px;
+  --shadow-btn: inset rgba(0, 0, 0, 0.06) 0 2px 4px 0,
+    0 0 0 1px rgba(0, 0, 0, 0.18);
+}
+
+/* Base — inside @layer so Tailwind utilities always win the cascade. */
+@layer base {
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: auto;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: var(--color-invert);
+    color: var(--color-invert-ink);
+  }
+}
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+
+/* max-width 1080 + 44px gutters => 992px content */
+.container-1080 {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-inline: 44px;
+}
+
+.section-pad {
+  padding-block: 128px;
+}
+
+@layer components {
+  /* Type scale — Framer's per-breakpoint sizes, measured:
+     h1 72 (>=1200) / 64 (992) / 48 (768) / 42 (<=480); h2 64 / 54 / 46 / 36. */
+  .t-h1 {
+    font-size: 72px;
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -2.16px;
+  }
+  .t-h2 {
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -1.92px;
+  }
+  .t-h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.96px;
+  }
+  .t-h4 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.72px;
+  }
+  .t-lead {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.66px;
+  }
+  .t-body-lg {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.36px;
+  }
+  .t-body {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.32px;
+  }
+  .t-body-sm {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: -0.14px;
+  }
+  .t-label {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.28px;
+  }
+  .t-micro {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.24px;
+  }
+
+  @media (max-width: 1199.98px) {
+    .t-h1 {
+      font-size: 64px;
+      line-height: 0.95;
+      letter-spacing: -1.92px;
+    }
+    .t-h2 {
+      font-size: 54px;
+      letter-spacing: -1.62px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .t-h1 {
+      font-size: 48px;
+      line-height: 0.95;
+      letter-spacing: -1.44px;
+    }
+    .t-h2 {
+      font-size: 46px;
+      letter-spacing: -1.38px;
+    }
+    .section-pad {
+      padding-block: 96px;
+    }
+    .t-h3 {
+      font-size: 28px;
+      letter-spacing: -0.84px;
+    }
+    .t-h4 {
+      font-size: 20px;
+      letter-spacing: -0.6px;
+    }
+    .t-lead {
+      font-size: 20px;
+      letter-spacing: -0.6px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .t-h1 {
+      font-size: 42px;
+      line-height: 0.95;
+      letter-spacing: -1.26px;
+    }
+    .t-h2 {
+      font-size: 36px;
+      letter-spacing: -1.08px;
+    }
+    .t-h3 {
+      font-size: 26px;
+      letter-spacing: -0.78px;
+    }
+    .t-lead {
+      font-size: 18px;
+      letter-spacing: -0.36px;
+    }
+    .section-pad {
+      padding-block: 72px;
+    }
+    .container-1080 {
+      padding-inline: 22px;
+    }
+  }
+}
+
+/* ==========================================================================
+   Scroll reveal (Framer "appear on scroll": blur + rise, per word)
+   ========================================================================== */
+
+.reveal-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word {
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/*
+ * A touch target of at least 44x44 around a small control, without changing
+ * its size or the layout: an invisible box centred on the element. The
+ * element must be positioned (relative or absolute) and not clipped within
+ * 7px. Used below 768px as `max-md:tap-target`.
+ */
+@utility tap-target {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Theme toggle: one glyph is visible per theme. */
+.tt-moon {
+  display: none;
+}
+.dark .tt-sun {
+  display: none;
+}
+.dark .tt-moon {
+  display: block;
+}

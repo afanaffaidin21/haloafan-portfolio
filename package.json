@@ -1,0 +1,42 @@
+{
+  "name": "launchfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "seed": "payload run scripts/seed.ts",
+    "thumbs": "tsx scripts/thumbnails/build.ts"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.93.0",
+    "@payloadcms/db-sqlite": "3.93.0",
+    "@payloadcms/next": "3.93.0",
+    "@payloadcms/richtext-lexical": "3.93.0",
+    "@payloadcms/storage-s3": "3.93.0",
+    "graphql": "^16.15.0",
+    "lenis": "^1.1.20",
+    "motion": "^12.23.12",
+    "next": "16.4.6",
+    "payload": "3.93.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.6",
+    "sass": "^1.108.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.8.3",
+    "vitest": "^5.1.0"
+  }
+}
