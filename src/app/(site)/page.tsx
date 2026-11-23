@@ -75,16 +75,10 @@ export default async function HomePage() {
           <Appear delay={0.4} className="flex w-fit items-center gap-3">
             <a
               href={`mailto:${settings.email}`}
-              className="group flex h-11 items-center gap-2.5 rounded-[24px] bg-invert py-2 pl-2 pr-4 text-invert-ink shadow-btn transition-opacity hover:opacity-90"
+              className="flex h-11 items-center gap-2.5 rounded-[24px] bg-invert py-2 pl-2 pr-4 text-invert-ink shadow-btn transition-opacity hover:opacity-90"
             >
-              <span className="relative block size-7">
-                <span className={`block size-7 overflow-hidden rounded-full${emptyFrame(settings.avatar)}`}>
-                  <MaybeImg src={settings.avatar} alt="" className="size-7 rounded-full object-cover" />
-                </span>
-                <span className="absolute left-1/2 top-1/2 grid size-3.5 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-ink">
-                  <span className="absolute block h-[1.5px] w-2 bg-invert" />
-                  <span className="absolute block h-2 w-[1.5px] bg-invert transition-transform duration-300 group-hover:scale-y-0" />
-                </span>
+              <span className={`block size-7 overflow-hidden rounded-full${emptyFrame(settings.avatar)}`}>
+                <MaybeImg src={settings.avatar} alt="" className="size-7 rounded-full object-cover" />
               </span>
               <span className="t-label whitespace-pre">Email me</span>
             </a>
