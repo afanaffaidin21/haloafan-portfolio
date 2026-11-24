@@ -509,7 +509,7 @@ async function seedAdmin(): Promise<"created" | "exists" | "not requested"> {
   const email = process.env.SEED_ADMIN_EMAIL;
   const password = process.env.SEED_ADMIN_PASSWORD;
   if (!email || !password) return "not requested";
-  await payload.create({ collection: "users", data: { email, password } });
+  await payload.create({ collection: "users", data: { email, password, role: "owner" } });
   return "created";
 }
 

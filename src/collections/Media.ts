@@ -2,6 +2,7 @@ import os from "node:os";
 import path from "node:path";
 import type { CollectionConfig } from "payload";
 
+import { ownerOnly, ownerOrAgent } from "../access/roles";
 import { revalidateSite } from "../lib/revalidate";
 import { storageEnabled } from "../lib/storage";
 
@@ -9,8 +10,11 @@ export const Media: CollectionConfig = {
   slug: "media",
   access: {
     // Payload's default read access requires an authenticated user, which would
-    // make every image on the public site return 403. Writes keep the default.
+    // make every image on the public site return 403.
     read: () => true,
+    create: ownerOrAgent,
+    update: ownerOnly,
+    delete: ownerOnly,
   },
   hooks: {
     afterChange: [() => revalidateSite()],

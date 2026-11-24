@@ -1,9 +1,15 @@
 import type { CollectionConfig } from "payload";
 
+import { ownerOnly } from "../access/roles";
 import { revalidateSite } from "../lib/revalidate";
 
 export const Projects: CollectionConfig = {
   slug: "projects",
+  access: {
+    create: ownerOnly,
+    update: ownerOnly,
+    delete: ownerOnly,
+  },
   versions: { drafts: false },
   hooks: {
     afterChange: [() => revalidateSite()],

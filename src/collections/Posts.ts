@@ -1,6 +1,13 @@
-import type { CollectionConfig, TextFieldSingleValidation } from "payload";
+import { APIError } from "payload";
+import type {
+  CollectionBeforeChangeHook,
+  CollectionBeforeOperationHook,
+  CollectionConfig,
+  TextFieldSingleValidation,
+} from "payload";
 import { text } from "payload/shared";
 
+import { isAgent, ownerOnly, ownerOrAgent } from "../access/roles";
 import { POST_CATEGORIES } from "../lib/post-meta";
 import { revalidateSite, shouldRevalidatePost } from "../lib/revalidate";
 import { SOCIAL_KEYS, SOCIAL_LABELS } from "../lib/social-icons";
@@ -13,14 +20,61 @@ const validateHttps: TextFieldSingleValidation = (value, args) => {
     : "Use a full URL that starts with https://.";
 };
 
+const guardAgentPostOperation: CollectionBeforeOperationHook = ({ args, operation, req }) => {
+  if (operation === "create" || operation === "update" || operation === "restoreVersion") {
+    const opArgs = args as {
+      draft?: boolean;
+      publishAllLocales?: boolean;
+      unpublishAllLocales?: boolean;
+      data?: { _status?: unknown };
+    };
+    const isDraftSave = Boolean(opArgs?.draft);
+    req.context.postDraftSave = isDraftSave;
+    if (isAgent(req.user)) {
+      if (!isDraftSave) {
+        throw new APIError("Agents must save posts as drafts (draft: true).", 403);
+      }
+      if (opArgs?.publishAllLocales || opArgs?.unpublishAllLocales) {
+        throw new APIError("Agents cannot publish or unpublish posts.", 403);
+      }
+      if ((operation === "create" || operation === "update") && opArgs?.data?._status === "published") {
+        throw new APIError("Agents cannot publish posts.", 403);
+      }
+    }
+  }
+  return args;
+};
+
+export const rejectAgentPublish: CollectionBeforeChangeHook = ({ data, req }) => {
+  if (!isAgent(req.user)) return data;
+  if (data?._status === "published") {
+    throw new APIError("Agents cannot publish posts.", 403);
+  }
+  const isDraftSave =
+    req.context?.postDraftSave !== undefined
+      ? req.context.postDraftSave === true
+      : req.query?.draft === "true" || req.query?.draft === true;
+  if (!isDraftSave) {
+    throw new APIError("Agents must save posts as drafts and cannot publish, unpublish, or live-edit posts.", 403);
+  }
+  return data;
+};
+
 export const Posts: CollectionConfig = {
   slug: "posts",
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "publishedAt", "_status"],
   },
+  access: {
+    create: ownerOrAgent,
+    update: ownerOrAgent,
+    delete: ownerOnly,
+  },
   versions: { drafts: true },
   hooks: {
+    beforeOperation: [guardAgentPostOperation],
+    beforeChange: [rejectAgentPublish],
     afterChange: [
       ({ doc, previousDoc }) => {
         if (shouldRevalidatePost({ doc, previousDoc })) revalidateSite();

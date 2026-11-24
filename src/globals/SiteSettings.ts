@@ -8,6 +8,7 @@ import type {
 } from "payload";
 import { select, text } from "payload/shared";
 
+import { ownerOnly } from "../access/roles";
 import { COPY_DEFAULTS, type TwoLine } from "../lib/copy-defaults";
 import { revalidateSite } from "../lib/revalidate";
 import { SOCIAL_KEYS, SOCIAL_LABELS } from "../lib/social-icons";
@@ -178,6 +179,9 @@ const copy: Field = {
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
+  access: {
+    update: ownerOnly,
+  },
   hooks: {
     afterChange: [() => revalidateSite()],
   },

@@ -1,5 +1,6 @@
 import type { CollectionConfig, Field } from "payload";
 
+import { ownerOnly } from "../access/roles";
 import { revalidateSite } from "../lib/revalidate";
 import { ICON_KEYS, TOOL_KEYS } from "../lib/skill-icons";
 
@@ -55,6 +56,11 @@ const skillFields: Field[] = [
 
 export const Skills: CollectionConfig = {
   slug: "skills",
+  access: {
+    create: ownerOnly,
+    update: ownerOnly,
+    delete: ownerOnly,
+  },
   versions: { drafts: false },
   hooks: {
     afterChange: [() => revalidateSite()],
