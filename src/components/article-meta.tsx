@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import type { Post } from "@/content/posts";
+import type { SiteSettingsView } from "@/lib/content";
 import type { SiteCopy } from "@/lib/copy-defaults";
 import { SOCIAL_LABELS, resolveSocialIcon } from "@/lib/social-icons";
 
@@ -72,7 +73,7 @@ export function DiscussionLinks({
       <div className="flex flex-wrap items-center gap-2">
         {items.map((item, index) => {
           const Icon = resolveSocialIcon(item.platform);
-          const platformLabel = SOCIAL_LABELS[item.platform];
+          const platformLabel = SOCIAL_LABELS[item.platform] ?? item.platform;
           return (
             <a
               key={`${item.platform}-${index}`}
@@ -88,6 +89,49 @@ export function DiscussionLinks({
           );
         })}
       </div>
+    </div>
+  );
+}
+
+/** Closing social card on article pages, linking to every configured CMS social profile. */
+export function FollowCard({
+  title,
+  body,
+  socials,
+  followerCount = "",
+}: {
+  title: string;
+  body: string;
+  socials: SiteSettingsView["socials"];
+  followerCount?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-4 rounded-[16px] bg-surface p-6 shadow-card">
+      <p className="t-body-lg">{title}</p>
+      <p className="t-body-sm text-ink-2">{body}</p>
+      {socials.length > 0 ? (
+        <div className="flex flex-wrap items-center gap-2">
+          {socials.map((item, index) => {
+            const Icon = resolveSocialIcon(item.platform);
+            const platformLabel = SOCIAL_LABELS[item.platform] ?? item.platform;
+            const count = item.platform === "x" ? followerCount : "";
+            return (
+              <a
+                key={`${item.platform}-${index}`}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={platformLabel}
+                className="inline-flex h-9 items-center gap-1.5 rounded-[24px] bg-invert px-3 text-invert-ink transition-opacity duration-300 hover:opacity-80 max-md:min-h-11"
+              >
+                <Icon className="size-3.5 shrink-0" strokeWidth={1.5} />
+                <span className="t-micro">{platformLabel}</span>
+                {count ? <span className="t-micro text-invert-ink-2">{count}</span> : null}
+              </a>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

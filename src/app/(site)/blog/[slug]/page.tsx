@@ -2,9 +2,8 @@ import { draftMode } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RevealWords } from "@/components/motion-primitives";
-import { ArticleMeta, DiscussionLinks } from "@/components/article-meta";
+import { ArticleMeta, DiscussionLinks, FollowCard } from "@/components/article-meta";
 import { Markdown } from "@/components/markdown";
-import { IconX } from "@/components/icons";
 import { MaybeImg, emptyFrame } from "@/components/maybe-img";
 import { PreviewBar } from "@/components/preview-bar";
 import type { Metadata } from "next";
@@ -49,7 +48,6 @@ export default async function PostPage({
 
   const more = posts.filter((p) => p.slug !== slug).slice(0, 4);
   const body = post.body.replace(/^#\s.*$/m, "").trim();
-  const xUrl = settings.socials.find((s) => s.platform === "x")?.url ?? "";
   const { blog } = settings.copy;
 
   return (
@@ -97,21 +95,12 @@ export default async function PostPage({
 
             <DiscussionLinks items={post.discussion} label={blog.discussedOn} />
 
-            <div className="flex flex-col gap-4 rounded-[16px] bg-surface p-6 shadow-card">
-              <p className="t-body-lg">{blog.followTitle}</p>
-              <p className="t-body-sm text-ink-2">{blog.followBody}</p>
-              {xUrl && settings.followerCount ? (
-                <a
-                  href={xUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-[30px] w-fit items-center gap-1 rounded-[24px] bg-invert px-2 text-invert-ink"
-                >
-                  <IconX className="size-3.5" strokeWidth={1.5} />
-                  <span className="t-micro">{settings.followerCount}</span>
-                </a>
-              ) : null}
-            </div>
+            <FollowCard
+              title={blog.followTitle}
+              body={blog.followBody}
+              socials={settings.socials}
+              followerCount={settings.followerCount}
+            />
           </div>
         </div>
       </section>

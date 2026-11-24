@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ArticleMeta, DiscussionLinks } from "../../src/components/article-meta";
+import { ArticleMeta, DiscussionLinks, FollowCard } from "../../src/components/article-meta";
 import { Articles } from "../../src/components/articles";
 import { BlogList } from "../../src/components/blog-list";
 import { COPY_DEFAULTS } from "../../src/lib/copy-defaults";
@@ -144,4 +144,40 @@ test("blog and articles copy defaults match the AI notes framing", () => {
     "Experiments, workflows, and lessons from building websites and web apps with AI.",
   );
   expect(COPY_DEFAULTS.articles.heading.line2).toBe("notes on web and AI.");
+});
+
+test("FollowCard renders clickable social links in CMS order and hides links when empty", () => {
+  const emptyHtml = renderToStaticMarkup(
+    <FollowCard
+      title={COPY_DEFAULTS.blog.followTitle}
+      body={COPY_DEFAULTS.blog.followBody}
+      socials={[]}
+    />,
+  );
+  expect(emptyHtml).toContain(COPY_DEFAULTS.blog.followTitle);
+  expect(emptyHtml).not.toContain("<a ");
+
+  const html = renderToStaticMarkup(
+    <FollowCard
+      title={COPY_DEFAULTS.blog.followTitle}
+      body={COPY_DEFAULTS.blog.followBody}
+      socials={[
+        { platform: "linkedin", url: "https://linkedin.com/in/afanaffaidin" },
+        { platform: "github", url: "https://github.com/afanaffaidin21" },
+        { platform: "threads", url: "https://www.threads.com/@afanaffaidin" },
+        { platform: "x", url: "https://x.com/afanaffaidin" },
+      ]}
+      followerCount="1,200"
+    />,
+  );
+
+  expect(html).toContain('href="https://linkedin.com/in/afanaffaidin"');
+  expect(html).toContain('href="https://github.com/afanaffaidin21"');
+  expect(html).toContain('href="https://www.threads.com/@afanaffaidin"');
+  expect(html).toContain('href="https://x.com/afanaffaidin"');
+  expect(html.match(/target="_blank" rel="noopener noreferrer"/g)).toHaveLength(4);
+  expect(html).toContain('aria-label="LinkedIn"');
+  expect(html).toContain('aria-label="GitHub"');
+  expect(html).toContain('aria-label="Threads"');
+  expect(html).toContain("1,200");
 });
