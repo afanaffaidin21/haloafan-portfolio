@@ -161,6 +161,7 @@ const copy: Field = {
       type: "group",
       admin: { description: "Project detail pages." },
       fields: [
+        copyText("relatedNotesHeading", COPY_DEFAULTS.project.relatedNotesHeading),
         copyText("moreHeading", COPY_DEFAULTS.project.moreHeading),
         copyText("placeholderCard", COPY_DEFAULTS.project.placeholderCard, "textarea"),
       ],

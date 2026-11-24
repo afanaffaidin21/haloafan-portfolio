@@ -4,8 +4,9 @@ import { ProjectCard } from "@/components/project-card";
 import { RevealWords } from "@/components/motion-primitives";
 import { IconDownload, IconMail } from "@/components/icons";
 import { ProjectBlocks, ProjectHero, ProjectQuote } from "@/components/project-detail";
+import { RelatedNotes } from "@/components/related-notes";
 import type { Metadata } from "next";
-import { getProject, getProjects, getSiteSettings } from "@/lib/content";
+import { getPostsForProject, getProject, getProjects, getSiteSettings } from "@/lib/content";
 import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -36,10 +37,11 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [project, settings, projects] = await Promise.all([
+  const [project, settings, projects, relatedPosts] = await Promise.all([
     getProject(slug),
     getSiteSettings(),
     getProjects(),
+    getPostsForProject(slug),
   ]);
   if (!project) notFound();
 
@@ -53,6 +55,7 @@ export default async function ProjectPage({
       <main className="flex w-full flex-col items-center">
         <ProjectBlocks blocks={project.blocks} />
         <ProjectQuote quote={project.quote} />
+        <RelatedNotes posts={relatedPosts} heading={copy.relatedNotesHeading} />
 
         <section className="section-pad flex w-full flex-col items-center gap-12">
           <div className="container-1080 flex flex-col gap-12">

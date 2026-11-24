@@ -811,6 +811,7 @@ export interface SiteSetting {
      * Project detail pages.
      */
     project?: {
+      relatedNotesHeading?: string | null;
       moreHeading?: string | null;
       placeholderCard?: string | null;
     };
@@ -992,6 +993,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         project?:
           | T
           | {
+              relatedNotesHeading?: T;
               moreHeading?: T;
               placeholderCard?: T;
             };

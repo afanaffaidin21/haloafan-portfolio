@@ -34,7 +34,7 @@ export type SiteCopy = {
     discussedOn: string;
   };
   projects: { title: TwoLine; subtitle: string };
-  project: { moreHeading: string; placeholderCard: string };
+  project: { relatedNotesHeading: string; moreHeading: string; placeholderCard: string };
   /** Shared by the closing card on `/projects` and `/projects/[slug]`. */
   contactCta: TwoLine;
   footer: { lead: string; cycleWords: string[]; line2: string };
@@ -93,6 +93,7 @@ export const COPY_DEFAULTS: SiteCopy = {
     subtitle: "Each project shows what I built, the tools I used, and a link to the live site.",
   },
   project: {
+    relatedNotesHeading: "Related notes",
     moreHeading: "More Projects",
     placeholderCard: "Have a project in mind? Email me and tell me what you need.",
   },
