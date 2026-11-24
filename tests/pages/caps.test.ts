@@ -27,9 +27,15 @@ const post = (slug: string): Post => ({
   title: slug,
   description: "",
   category: "Design",
+  categoryKey: "",
   date: "Mar 6, 2025",
+  publishedAt: "2025-03-06T00:00:00.000Z",
   image: `/img/${slug}.png`,
   body: "",
+  tools: [],
+  relatedProjects: [],
+  discussion: [],
+  aiAssisted: false,
 });
 
 test("five featured projects still yield four collage slots", () => {

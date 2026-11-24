@@ -296,12 +296,23 @@ export interface Post {
   title: string;
   slug: string;
   description?: string | null;
-  category?: string | null;
-  date?: string | null;
+  category: 'ai-workflow' | 'ai-in-products' | 'experiments' | 'wordpress';
+  publishedAt: string;
   image?: (number | null) | Media;
   body?: string | null;
+  tools?: string[] | null;
+  relatedProjects?: (number | Project)[] | null;
+  discussion?:
+    | {
+        platform: 'x' | 'github' | 'linkedin' | 'instagram' | 'threads' | 'dribbble' | 'behance' | 'tiktok' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  aiAssisted?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -515,11 +526,22 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   description?: T;
   category?: T;
-  date?: T;
+  publishedAt?: T;
   image?: T;
   body?: T;
+  tools?: T;
+  relatedProjects?: T;
+  discussion?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  aiAssisted?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

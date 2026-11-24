@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { toFaqView, toProjectCardView, toProjectView, toSiteSettingsView } from "../../src/lib/content";
+import { toFaqView, toPostView, toProjectCardView, toProjectView, toSiteSettingsView } from "../../src/lib/content";
 import { COPY_DEFAULTS } from "../../src/lib/copy-defaults";
 
 test("project view flattens media to urls and keeps the card props", () => {
@@ -211,4 +211,55 @@ test("an image tile carries mobileSrc (hero size) only when a mobile image is se
   expect(view.blocks[0].tiles[0]).toEqual({ kind: "image", src: "/p-wide.jpg", alt: "a", mobileSrc: "/m-hero.jpg" });
   expect(view.blocks[1].tiles[0]).toEqual({ kind: "image", src: "/q-wide.jpg", alt: "b" });
   expect("mobileSrc" in view.blocks[1].tiles[0]).toBe(false);
+});
+
+test("toPostView maps the new fields", () => {
+  const view = toPostView({
+    slug: "claude-workflow",
+    title: "Claude Workflow",
+    description: "Notes on shipping with AI.",
+    category: "ai-workflow",
+    publishedAt: "2026-11-24T00:00:00.000Z",
+    image: sized("post"),
+    body: "## Heading\n\nBody text.",
+    tools: ["Claude"],
+    relatedProjects: [{ slug: "jejak-puncak", name: "Jejak Puncak" }, 42],
+    discussion: [
+      { platform: "threads", url: "https://www.threads.com/@afanaffaidin/post/1" },
+      { platform: "nope", url: "https://x" },
+    ],
+    aiAssisted: true,
+  });
+
+  expect(view.category).toBe("AI Workflow");
+  expect(view.categoryKey).toBe("ai-workflow");
+  expect(view.date).toBe("Nov 24, 2026");
+  expect(view.publishedAt).toBe("2026-11-24T00:00:00.000Z");
+  expect(view.image).toBe("/post-hero.jpg");
+  expect(view.tools).toEqual(["Claude"]);
+  expect(view.relatedProjects).toEqual([{ slug: "jejak-puncak", name: "Jejak Puncak" }]);
+  expect(view.relatedProjects[0].slug).toBe("jejak-puncak");
+  expect(view.discussion).toEqual([
+    { platform: "threads", url: "https://www.threads.com/@afanaffaidin/post/1" },
+  ]);
+  expect(view.aiAssisted).toBe(true);
+});
+
+test("toPostView tolerates an empty doc", () => {
+  const view = toPostView({});
+  expect(view).toEqual({
+    slug: "",
+    title: "",
+    description: "",
+    category: "",
+    categoryKey: "",
+    date: "",
+    publishedAt: "",
+    image: "",
+    body: "",
+    tools: [],
+    relatedProjects: [],
+    discussion: [],
+    aiAssisted: false,
+  });
 });

@@ -18,6 +18,14 @@ export function revalidateSite(): void {
   }
 }
 
+/** Revalidate only when a publish, update to a published post, or unpublish happened. */
+export function shouldRevalidatePost(args: {
+  doc: { _status?: string | null };
+  previousDoc?: { _status?: string | null } | null;
+}): boolean {
+  return args.doc._status === "published" || args.previousDoc?._status === "published";
+}
+
 /** `Invariant: static generation store missing in revalidatePath(...)`. */
 function isMissingStaticGenerationStore(error: unknown): boolean {
   return (

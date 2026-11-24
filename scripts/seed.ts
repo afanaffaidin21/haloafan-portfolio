@@ -20,6 +20,7 @@ import { projects as projectContent, type MediaBlock, type MediaTile } from "@/c
 import { faqs, services, site, techStack, workHistory } from "@/content/site";
 import type { Faq, Media, Post, Project, SiteSetting, Skill } from "@/payload-types";
 
+import { POST_CATEGORIES, type PostCategory } from "@/lib/post-meta";
 import { storageEnabled } from "@/lib/storage";
 
 import { migrations } from "../src/migrations";
@@ -92,6 +93,21 @@ function mediaId(src: string): number {
   const id = mediaIds.get(path.posix.basename(src));
   if (id === undefined) throw new Error(`No seeded Media record for "${src}"`);
   return id;
+}
+
+/** Project slug → Project id, filled by the projects pass. */
+const projectIds = new Map<string, number>();
+
+function projectId(slug: string): number {
+  const id = projectIds.get(slug);
+  if (id === undefined) throw new Error(`No seeded Project record for "${slug}"`);
+  return id;
+}
+
+function postCategory(key: string): PostCategory {
+  const match = POST_CATEGORIES.find((c) => c.value === key);
+  if (!match) throw new Error(`"${key}" is not a known Posts.category option`);
+  return match.value;
 }
 
 // --- Skills -----------------------------------------------------------------
@@ -195,10 +211,15 @@ function toPostData(post: (typeof postContent)[number]): PostData {
     title: post.title,
     slug: post.slug,
     description: post.description,
-    category: post.category,
-    date: post.date,
-    image: mediaId(post.image),
+    category: postCategory(post.categoryKey),
+    publishedAt: post.publishedAt,
+    image: post.image ? mediaId(post.image) : null,
     body: post.body,
+    tools: [...post.tools],
+    relatedProjects: post.relatedProjects.map(({ slug }) => projectId(slug)),
+    discussion: post.discussion.map(({ platform, url }) => ({ platform, url })),
+    aiAssisted: post.aiAssisted,
+    _status: "published",
   };
 }
 
@@ -318,10 +339,12 @@ async function seedProjects(): Promise<Counts> {
     });
 
     if (found.docs[0]) {
-      await payload.update({ collection: "projects", id: found.docs[0].id, data });
+      const updatedDoc = await payload.update({ collection: "projects", id: found.docs[0].id, data });
+      projectIds.set(project.slug, updatedDoc.id);
       updated += 1;
     } else {
-      await payload.create({ collection: "projects", data });
+      const createdDoc = await payload.create({ collection: "projects", data });
+      projectIds.set(project.slug, createdDoc.id);
       created += 1;
     }
   }

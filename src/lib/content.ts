@@ -14,6 +14,7 @@ import type { Faq, Media, Post as PostDoc, Project as ProjectDoc, SiteSetting, S
 
 import { COPY_DEFAULTS, type SiteCopy } from "./copy-defaults";
 import { mediaUrl, type MediaRef } from "./media";
+import { categoryLabel, formatPostDate } from "./post-meta";
 import { isSocialKey, type SocialKey } from "./social-icons";
 
 /** A stored upload: the related Media doc at depth 1, or a legacy public path. */
@@ -24,13 +25,16 @@ const str = (value: string | null | undefined): string => value ?? "";
 const byOrder = (a: { order?: number | null }, b: { order?: number | null }): number =>
   (a.order ?? Number.POSITIVE_INFINITY) - (b.order ?? Number.POSITIVE_INFINITY);
 
-/** Display dates are strings ("Mar 6, 2025"), so they are compared by parsed time. */
-const byDateDesc = (a: { date?: string | null }, b: { date?: string | null }): number => {
-  const time = (date: string | null | undefined) => {
-    const parsed = Date.parse(date ?? "");
+/** Newest `publishedAt` first; unset or invalid dates sort last. */
+const byDateDesc = (a: { publishedAt?: string | null }, b: { publishedAt?: string | null }): number => {
+  const time = (iso: string | null | undefined) => {
+    const parsed = Date.parse(iso ?? "");
     return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
   };
-  return time(b.date) - time(a.date);
+  const ta = time(a.publishedAt);
+  const tb = time(b.publishedAt);
+  if (ta === tb) return 0;
+  return tb - ta;
 };
 
 // --- Projects ---------------------------------------------------------------
@@ -344,14 +348,20 @@ export function toSiteSettingsView(doc: SiteSettingsDocInput): SiteSettingsView 
 
 // --- Posts ------------------------------------------------------------------
 
+type RelatedProjectRef = number | { slug?: string | null; name?: string | null };
+
 export type PostDocInput = {
   slug?: string | null;
   title?: string | null;
   description?: string | null;
   category?: string | null;
-  date?: string | null;
+  publishedAt?: string | null;
   image?: MediaUpload | null;
   body?: string | null;
+  tools?: string[] | null;
+  relatedProjects?: RelatedProjectRef[] | null;
+  discussion?: { platform?: string | null; url?: string | null }[] | null;
+  aiAssisted?: boolean | null;
 };
 
 /**
@@ -366,14 +376,31 @@ function stripBodyHeader(md: string): string {
 }
 
 export function toPostView(doc: PostDocInput): Post {
+  const categoryKey = str(doc.category);
+  const publishedAt = str(doc.publishedAt);
   return {
     slug: str(doc.slug),
     title: str(doc.title),
     description: str(doc.description),
-    category: str(doc.category),
-    date: str(doc.date),
+    category: categoryLabel(categoryKey),
+    categoryKey,
+    date: formatPostDate(publishedAt),
+    publishedAt,
     image: mediaUrl(doc.image, "hero") ?? "",
     body: stripBodyHeader(str(doc.body)),
+    tools: (doc.tools ?? []).map((item) => item.trim()).filter(Boolean),
+    relatedProjects: (doc.relatedProjects ?? []).flatMap((item) => {
+      if (typeof item !== "object" || item === null) return [];
+      const slug = str(item.slug).trim();
+      const name = str(item.name).trim();
+      return slug ? [{ slug, name }] : [];
+    }),
+    discussion: (doc.discussion ?? []).flatMap((row) => {
+      const platform = str(row.platform).trim();
+      const url = str(row.url).trim();
+      return isSocialKey(platform) && url ? [{ platform, url }] : [];
+    }),
+    aiAssisted: Boolean(doc.aiAssisted),
   };
 }
 
@@ -473,20 +500,48 @@ export async function getProject(slug: string): Promise<ProjectRow | null> {
 
 export async function getPosts(): Promise<Post[]> {
   const payload = await payloadClient();
-  const { docs } = await payload.find({ collection: "posts", depth: 1, pagination: false });
+  const { docs } = await payload.find({
+    collection: "posts",
+    where: { _status: { equals: "published" } },
+    draft: false,
+    depth: 1,
+    pagination: false,
+  });
   return [...(docs as PostDoc[])].sort(byDateDesc).map(toPostView);
 }
 
-export async function getPost(slug: string): Promise<Post | null> {
+export async function getPost(slug: string, opts?: { draft?: boolean }): Promise<Post | null> {
   const payload = await payloadClient();
+  const draft = opts?.draft === true;
   const { docs } = await payload.find({
     collection: "posts",
-    where: { slug: { equals: slug } },
+    where: draft
+      ? { slug: { equals: slug } }
+      : { and: [{ slug: { equals: slug } }, { _status: { equals: "published" } }] },
+    draft,
     depth: 1,
     limit: 1,
   });
   const doc = docs[0];
   return doc ? toPostView(doc) : null;
+}
+
+export async function getPostsForProject(projectSlug: string): Promise<Post[]> {
+  if (!projectSlug) return [];
+  const payload = await payloadClient();
+  const { docs } = await payload.find({
+    collection: "posts",
+    where: {
+      and: [
+        { _status: { equals: "published" } },
+        { "relatedProjects.slug": { equals: projectSlug } },
+      ],
+    },
+    draft: false,
+    depth: 1,
+    pagination: false,
+  });
+  return [...(docs as PostDoc[])].sort(byDateDesc).map(toPostView);
 }
 
 export async function getSkills(): Promise<SkillView[]> {

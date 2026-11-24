@@ -14,7 +14,21 @@ import { COPY_DEFAULTS } from "../../src/lib/copy-defaults";
 import type { Post } from "../../src/content/posts";
 
 /** Every surface the CMS feeds, rendered with all of its media fields empty. */
-const post = (slug: string): Post => ({ slug, title: slug, description: "", category: "", date: "", image: "", body: "" });
+const post = (slug: string): Post => ({
+  slug,
+  title: slug,
+  description: "",
+  category: "",
+  categoryKey: "",
+  date: "",
+  publishedAt: "",
+  image: "",
+  body: "",
+  tools: [],
+  relatedProjects: [],
+  discussion: [],
+  aiAssisted: false,
+});
 
 const bareProject = toProjectView({ slug: "p", name: "P", quote: { text: "Quote.", name: "Theo" } });
 
