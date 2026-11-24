@@ -69,5 +69,11 @@ Open `/admin`, create the first user immediately. Until that account exists the 
 ## Later changes
 
 - Content edits need nothing but a save.
-- Schema edits (adding a field or collection) need `npx payload generate:types` and `npx payload generate:importmap` committed, plus a deploy.
+- Schema edits (adding a field or collection) need `npx payload generate:types` and `npx payload generate:importmap` committed, plus a Postgres migration (`src/migrations/`). Production runs with `push: false` and `prodMigrations`, so never push schema directly to Postgres:
+  1. Generate a migration against the Neon `dev` branch with `DATABASE_URI` set from `MIGRATION_DATABASE_URI` for that command only (`npx payload migrate:create <name>`).
+  2. Read the generated SQL before running it.
+  3. Apply and verify on the `dev` branch (`npx payload migrate`, then `npx payload migrate:status` shows no pending migrations).
+  4. Commit the migration files and deploy; production applies pending migrations on boot.
+- Keep production, migration (`MIGRATION_DATABASE_URI`), and agent (`PAYLOAD_AGENT_API_KEY`) credentials in `.env.deploy`, **never** `.env.production.local`. Next.js automatically loads `.env.production.local` during `npm run build`, which would point a local build at production Postgres. `.env.deploy` is gitignored by `.env.*` and ignored by Next.js; load it explicitly per command (for example `node --env-file=.env.deploy ...` or an explicit per-command shell variable).
+- Always run local `npm run build` against SQLite (`DATABASE_URI=file:./payload.db` with a local `PAYLOAD_SECRET`).
 - Moving to a paid Vercel plan is required only if the site starts taking payments; the Hobby terms allow a personal portfolio that advertises availability.

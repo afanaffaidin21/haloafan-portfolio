@@ -38,3 +38,21 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Site content and its sources: `docs/content/copy-draft.md`. Claims on the
   site need a source there (CV, fact sheet, or owner decision); no metrics or
   testimonials without one.
+- Agent draft-only rule: content agents using `PAYLOAD_AGENT_API_KEY` may only
+  create or update `posts` with `?draft=true` (`_status: "draft"`) and upload
+  `media`. Never publish, unpublish, delete, or touch other collections
+  (server-side hooks and access control return 403). Follow
+  `docs/content/workflow.md` and `docs/content/TONE.md` when drafting.
+- Postgres migration rule: production Postgres runs with `push: false` and
+  `prodMigrations`; never push schema changes directly to Postgres. Generate
+  committed migrations against the Neon `dev` branch using
+  `MIGRATION_DATABASE_URI` (`npx payload migrate:create <name>`), inspect the
+  generated SQL before running (`npx payload migrate` and
+  `npx payload migrate:status`), and back up local `payload.db` and `./media`
+  outside the repo before any local SQLite push.
+- Production env and local build safety rule: store production, migration, and
+  agent credentials in `.env.deploy`, never `.env.production.local` (Next.js
+  auto-loads `.env.production.local` during `next build`). Load `.env.deploy`
+  explicitly per command (e.g. `node --env-file=.env.deploy ...` or an explicit
+  per-command shell variable), and always run local `npm run build` with
+  `DATABASE_URI=file:./payload.db`.

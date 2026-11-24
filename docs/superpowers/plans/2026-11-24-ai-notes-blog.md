@@ -219,7 +219,7 @@
 **Interfaces:**
 - Consumes: the final schema from Tasks 1, 3, 4, 5, 7, 8.
 
-- [ ] **Step 1:** Generate against the Neon `dev` branch (connection string in `.env.production.local` as `MIGRATION_DATABASE_URI`, never printed): run `npx payload migrate:create ai-notes` with `DATABASE_URI` set from that variable for the command only.
+- [ ] **Step 1:** Generate against the Neon `dev` branch (connection string in `.env.deploy` as `MIGRATION_DATABASE_URI`, never printed): run `npx payload migrate:create ai-notes` with `DATABASE_URI` set from that variable for the command only.
 - [ ] **Step 2:** Read the generated SQL. It must not drop tables or columns other than `posts.date` (production `posts` is empty). Add a data step that sets `role = 'owner'` for every existing user, so the production owner is not demoted to the default `agent`.
 - [ ] **Step 3:** Run `npx payload migrate` against the `dev` branch; then `npx payload migrate:status` shows no pending migrations.
 - [ ] **Step 4:** `npm run build` with the normal local env — PASS; full `npx vitest run`, `npx tsc --noEmit`, `npm run lint` — PASS.
@@ -240,7 +240,7 @@
 ### Task 11: Production rollout and the first draft
 
 - [ ] **Step 1:** Push to `main` (OWNER confirms). Vercel deploys; `prodMigrations` applies the migration. Verify the production owner still logs in and has full access.
-- [ ] **Step 2: OWNER** — in `/admin` → Users → create user `agent` (email the owner chooses, role `agent`), enable API Key, generate it, and type it into `.env.production.local` as `PAYLOAD_AGENT_API_KEY`. Do not paste it into chat.
+- [ ] **Step 2: OWNER** — in `/admin` → Users → create user `agent` (email the owner chooses, role `agent`), enable API Key, generate it, and type it into `.env.deploy` as `PAYLOAD_AGENT_API_KEY`. Do not paste it into chat.
 - [ ] **Step 3:** Production checks: with the agent key, create a draft test post via REST → succeeds; try to publish it → 403; try DELETE → 403; anonymous `/blog/<slug>/` → 404; owner Preview shows it with the bar; owner deletes the test post.
 - [ ] **Step 4:** Draft the first article as the agent: an AI Workflow case study on building this portfolio with coding agents, following `docs/content/workflow.md` and `TONE.md` (drafted in `docs/content/drafts/` first, then sent to the admin as a draft with `relatedProjects` empty and `aiAssisted: true`). Stop and ask the owner to preview it. The owner publishes.
 - [ ] **Step 5:** Report every check with its result, plus `npm run lint`, vitest, tsc, and build status.

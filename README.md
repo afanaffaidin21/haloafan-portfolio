@@ -34,14 +34,24 @@ whenever a token or component rule changes.
 ## Content model
 
 Five content collections plus one global. `users` is the Payload auth collection
-that guards `/admin`.
+with `owner` and `agent` roles plus API key support (`useAPIKey: true`): only
+`owner` can log into `/admin`, publish or unpublish posts, delete records, or
+change settings and other collections; `agent` is restricted server-side to
+creating/updating `posts` drafts (`?draft=true`), creating `media`, and reading
+`posts` and `projects`.
 
 - `projects` — case studies: name, slug, kind, summary blocks, media tiles.
-- `posts` — articles: title, slug, description, category, date, image, and a
-  Markdown body (a plain-text textarea, rendered by the `Markdown` component).
+- `posts` — articles with drafts enabled (`versions: { drafts: true }`):
+  `title`, `slug`, `description`, `category` (`ai-workflow`, `ai-in-products`,
+  `experiments`, `wordpress`), `publishedAt`, `image`, `body` (plain-text
+  Markdown textarea rendered by the dependency-free `Markdown` component with
+  `##`/`###` headings, lists with one nesting level, fenced code blocks, inline
+  code, safe links, captioned images, blockquotes, and horizontal rules),
+  `tools`, `relatedProjects`, `discussion` (`platform` from `SOCIAL_KEYS`,
+  `https://` URL), and `aiAssisted` (default `true`).
 - `skills` — row and tile entries with icon, group, and strength.
 - `faqs` — question, answer, category, order.
-- `media` — uploads with alt text and card/hero image sizes.
+- `media` — uploads with alt text and card/hero/thumb/wide image sizes.
 - `site-settings` (global) — split into admin tabs (Identity, Hero, About,
   Sections, Socials, Footer, SEO). The tabs are unnamed, so every field keeps
   its root path and column:
@@ -64,6 +74,19 @@ own: the seed turns `services` into `skills` rows and `techStack` into skill
 tiles. The `faqs` array in the same file seeds the `faqs` collection.
 
 The site reads all of it through the view layer in `src/lib/content.ts`.
+
+### Draft preview and editorial workflow
+
+Clicking **Preview** on a post in `/admin` opens `/preview/?slug=<slug>`, which
+verifies the logged-in `owner` session cookie, enables Next.js Draft Mode, and
+redirects to `/blog/<slug>/` with a **"Preview, not published"** bar. Clicking
+**Exit preview** sends `POST /preview/exit/?slug=<slug>` to disable Draft Mode.
+Unpublished drafts return 404 to public visitors and never appear on `/`,
+`/blog`, project pages, `/sitemap.xml`, or OG metadata.
+
+Editorial tone rules and the agent draft REST API procedure live in
+[`docs/content/TONE.md`](docs/content/TONE.md) and
+[`docs/content/workflow.md`](docs/content/workflow.md).
 
 ### Editing copy
 
@@ -157,6 +180,15 @@ falls back to `file:./payload.db` for `DATABASE_URI`; if any R2 value
 `NODE_ENV=production`, and `payloadSecret()` in `src/lib/secret.ts` throws
 instead of booting Payload without one. Under `npm run dev` and `npm test` it is
 optional; an unset secret falls back to a fixed dev-only value.
+
+Run local production builds against SQLite (`DATABASE_URI=file:./payload.db`).
+Keep production, Neon migration (`MIGRATION_DATABASE_URI`), and agent
+(`PAYLOAD_AGENT_API_KEY`) credentials in `.env.deploy` — never
+`.env.production.local` — so Next.js does not auto-load production
+`DATABASE_URI` during `npm run build`. Load `.env.deploy` explicitly per command
+(for example `node --env-file=.env.deploy ...` or an explicit shell variable).
+See [`docs/deploy.md`](docs/deploy.md) for deployment and Postgres migration
+steps.
 
 ## Layout
 

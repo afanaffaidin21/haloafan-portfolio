@@ -123,7 +123,7 @@ Collection settings:
   site settings, projects, skills, or FAQs. Enforced on the server (access
   control plus a hook that rejects `_status: "published"` from an agent), not
   only hidden in the UI.
-- The agent API key lives only on the owner's machine (`.env.production.local`
+- The agent API key lives only on the owner's machine (`.env.deploy`
   or the agent's own secret store), never in the repo. The owner can revoke it
   in the admin at any time.
 - `docs/content/workflow.md` documents how an agent creates or updates a draft
