@@ -794,7 +794,9 @@ export interface SiteSetting {
   };
   socials?:
     | {
-        platform?: ('x' | 'github' | 'linkedin' | 'instagram' | 'threads' | 'dribbble' | 'behance') | null;
+        platform?:
+          | ('x' | 'github' | 'linkedin' | 'instagram' | 'threads' | 'dribbble' | 'behance' | 'tiktok' | 'youtube')
+          | null;
         label?: string | null;
         url: string;
         id?: string | null;

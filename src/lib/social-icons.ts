@@ -8,7 +8,9 @@ import {
   IconInstagram,
   IconLinkedIn,
   IconThreads,
+  IconTikTok,
   IconX,
+  IconYouTube,
 } from "../components/icons";
 
 export type SocialIcon = (p: { className?: string; strokeWidth?: number }) => ReactElement;
@@ -26,6 +28,8 @@ export const socialIconFor = {
   threads: IconThreads,
   dribbble: IconDribbble,
   behance: IconBehance,
+  tiktok: IconTikTok,
+  youtube: IconYouTube,
 } as const satisfies Record<string, SocialIcon>;
 
 export type SocialKey = keyof typeof socialIconFor;
@@ -41,6 +45,8 @@ export const SOCIAL_LABELS: Record<SocialKey, string> = {
   threads: "Threads",
   dribbble: "Dribbble",
   behance: "Behance",
+  tiktok: "TikTok",
+  youtube: "YouTube",
 };
 
 export function isSocialKey(key: string): key is SocialKey {
