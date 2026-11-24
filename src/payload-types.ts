@@ -795,6 +795,10 @@ export interface SiteSetting {
       moreHeading?: string | null;
       previewBar?: string | null;
       previewExit?: string | null;
+      toolsLabel?: string | null;
+      relatedLabel?: string | null;
+      aiDisclosure?: string | null;
+      discussedOn?: string | null;
     };
     projects?: {
       title?: {
@@ -969,6 +973,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               moreHeading?: T;
               previewBar?: T;
               previewExit?: T;
+              toolsLabel?: T;
+              relatedLabel?: T;
+              aiDisclosure?: T;
+              discussedOn?: T;
             };
         projects?:
           | T

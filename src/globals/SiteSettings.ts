@@ -142,6 +142,10 @@ const copy: Field = {
         copyText("moreHeading", COPY_DEFAULTS.blog.moreHeading),
         copyText("previewBar", COPY_DEFAULTS.blog.previewBar),
         copyText("previewExit", COPY_DEFAULTS.blog.previewExit),
+        copyText("toolsLabel", COPY_DEFAULTS.blog.toolsLabel),
+        copyText("relatedLabel", COPY_DEFAULTS.blog.relatedLabel),
+        copyText("aiDisclosure", COPY_DEFAULTS.blog.aiDisclosure, "textarea"),
+        copyText("discussedOn", COPY_DEFAULTS.blog.discussedOn),
       ],
     },
     {

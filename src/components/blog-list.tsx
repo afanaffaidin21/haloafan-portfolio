@@ -8,6 +8,7 @@ import type { Post } from "@/content/posts";
 function Card({
   slug,
   title,
+  category,
   date,
   image,
   description,
@@ -15,6 +16,7 @@ function Card({
 }: {
   slug: string;
   title: string;
+  category: string;
   date: string;
   image: string;
   description: string;
@@ -35,6 +37,7 @@ function Card({
       </div>
       <div className="flex min-h-[216px] flex-col gap-4 p-8">
         <div className="flex flex-col gap-4">
+          {category ? <p className="t-micro text-ink-2">{category}</p> : null}
           <h3 className="t-h4 whitespace-pre-wrap">{title}</h3>
           <div className="flex items-center gap-3">
             {date ? <time className="t-micro text-ink-2 whitespace-pre">{date}</time> : null}
@@ -134,6 +137,9 @@ export function BlogList({ posts, author, empty = "" }: { posts: Post[]; author:
             <div className="flex items-center p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
+                  {featured.category ? (
+                    <p className="t-micro text-ink-2">{featured.category}</p>
+                  ) : null}
                   <h2 className="t-h4">{featured.title}</h2>
                   <div className="flex items-center gap-3">
                     {featured.date ? (
@@ -165,6 +171,7 @@ export function BlogList({ posts, author, empty = "" }: { posts: Post[]; author:
                 key={p.slug}
                 slug={p.slug}
                 title={p.title}
+                category={p.category}
                 date={p.date}
                 image={p.image}
                 description={p.description}

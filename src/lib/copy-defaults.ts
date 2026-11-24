@@ -28,6 +28,10 @@ export type SiteCopy = {
     moreHeading: string;
     previewBar: string;
     previewExit: string;
+    toolsLabel: string;
+    relatedLabel: string;
+    aiDisclosure: string;
+    discussedOn: string;
   };
   projects: { title: TwoLine; subtitle: string };
   project: { moreHeading: string; placeholderCard: string };
@@ -69,16 +73,20 @@ export const COPY_DEFAULTS: SiteCopy = {
     cardHeading: { line1: "Still have a question?", line2: "Send me an email." },
     cardBody: "Tell me about the role or the project. I will reply with my availability and the next steps.",
   },
-  articles: { heading: { line1: "From my blog,", line2: "notes on web work." } },
+  articles: { heading: { line1: "From my blog,", line2: "notes on web and AI." } },
   blog: {
-    title: "Notes on web development",
-    intro: "Articles about WordPress, Next.js, and AI features for websites.",
+    title: "Notes on web development and AI",
+    intro: "Experiments, workflows, and lessons from building websites and web apps with AI.",
     empty: "No articles yet.",
     followTitle: "Find me online",
     followBody: "I am on LinkedIn, GitHub, and Threads.",
     moreHeading: "More articles",
     previewBar: "Preview, not published",
     previewExit: "Exit preview",
+    toolsLabel: "Tools",
+    relatedLabel: "Related project",
+    aiDisclosure: "Written with AI assistance. The ideas, tests, and decisions are mine.",
+    discussedOn: "Discussed on",
   },
   projects: {
     title: { line1: "Client work and", line2: "personal projects" },

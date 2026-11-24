@@ -8,6 +8,7 @@ import type { SiteSettingsView } from "@/lib/content";
 function Card({
   slug,
   title,
+  category,
   date,
   image,
   description,
@@ -16,6 +17,7 @@ function Card({
 }: {
   slug: string;
   title: string;
+  category: string;
   date: string;
   image: string;
   description: string;
@@ -46,6 +48,7 @@ function Card({
         }`}
       >
         <div className="flex flex-col gap-4">
+          {category ? <p className="t-micro text-ink-2">{category}</p> : null}
           <h3 className={`whitespace-pre-wrap ${wide ? "t-h4" : "t-h4"}`}>{title}</h3>
           <div className="flex items-center gap-3">
             {date ? <time className="t-micro text-ink-2 whitespace-pre">{date}</time> : null}
@@ -109,24 +112,27 @@ export function Articles({
               wide
               slug={featured.slug}
               title={featured.title}
+              category={featured.category}
               date={featured.date}
               image={featured.image}
               description={featured.description}
             />
           </div>
-          <div className="md:h-[400px]">
+          <div className="md:min-h-[400px]">
             <Card author={author}
               slug={second.slug}
               title={second.title}
+              category={second.category}
               date={second.date}
               image={second.image}
               description={second.description}
             />
           </div>
-          <div className="md:h-[400px]">
+          <div className="md:min-h-[400px]">
             <Card author={author}
               slug={third.slug}
               title={third.title}
+              category={third.category}
               date={third.date}
               image={third.image}
               description={third.description}

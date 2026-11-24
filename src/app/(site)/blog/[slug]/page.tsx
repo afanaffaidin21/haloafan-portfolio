@@ -2,6 +2,7 @@ import { draftMode } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RevealWords } from "@/components/motion-primitives";
+import { ArticleMeta, DiscussionLinks } from "@/components/article-meta";
 import { Markdown } from "@/components/markdown";
 import { IconX } from "@/components/icons";
 import { MaybeImg, emptyFrame } from "@/components/maybe-img";
@@ -78,6 +79,8 @@ export default async function PostPage({
           </div>
 
           {post.description ? <p className="t-body max-w-[580px]">{post.description}</p> : null}
+
+          <ArticleMeta post={post} copy={blog} />
         </div>
 
         <div className="container-1080">
@@ -91,6 +94,8 @@ export default async function PostPage({
         <div className="container-1080 flex flex-col gap-16">
           <div className="mx-auto flex w-full max-w-[672px] flex-col gap-16">
             <Markdown source={body} />
+
+            <DiscussionLinks items={post.discussion} label={blog.discussedOn} />
 
             <div className="flex flex-col gap-4 rounded-[16px] bg-surface p-6 shadow-card">
               <p className="t-body-lg">{blog.followTitle}</p>
