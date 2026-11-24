@@ -16,5 +16,8 @@ test("Postgres runs on migrations, never schema push; SQLite keeps pushing local
   expect(pg).toContain('migrationDir: path.resolve(dirname, "migrations")');
   expect(src).toContain("sqliteAdapter({ client: { url: uri } })");
   const { migrations } = await import("../../src/migrations");
-  expect(migrations.map((m) => m.name)).toEqual([expect.stringMatching(/_initial$/)]);
+  expect(migrations.map((m) => m.name)).toEqual([
+    expect.stringMatching(/_initial$/),
+    expect.stringMatching(/_ai_notes$/),
+  ]);
 });
