@@ -26,6 +26,8 @@ export type SiteCopy = {
     followTitle: string;
     followBody: string;
     moreHeading: string;
+    previewBar: string;
+    previewExit: string;
   };
   projects: { title: TwoLine; subtitle: string };
   project: { moreHeading: string; placeholderCard: string };
@@ -75,6 +77,8 @@ export const COPY_DEFAULTS: SiteCopy = {
     followTitle: "Find me online",
     followBody: "I am on LinkedIn, GitHub, and Threads.",
     moreHeading: "More articles",
+    previewBar: "Preview, not published",
+    previewExit: "Exit preview",
   },
   projects: {
     title: { line1: "Client work and", line2: "personal projects" },

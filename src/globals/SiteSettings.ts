@@ -140,6 +140,8 @@ const copy: Field = {
         copyText("followTitle", COPY_DEFAULTS.blog.followTitle),
         copyText("followBody", COPY_DEFAULTS.blog.followBody, "textarea"),
         copyText("moreHeading", COPY_DEFAULTS.blog.moreHeading),
+        copyText("previewBar", COPY_DEFAULTS.blog.previewBar),
+        copyText("previewExit", COPY_DEFAULTS.blog.previewExit),
       ],
     },
     {

@@ -793,6 +793,8 @@ export interface SiteSetting {
       followTitle?: string | null;
       followBody?: string | null;
       moreHeading?: string | null;
+      previewBar?: string | null;
+      previewExit?: string | null;
     };
     projects?: {
       title?: {
@@ -965,6 +967,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               followTitle?: T;
               followBody?: T;
               moreHeading?: T;
+              previewBar?: T;
+              previewExit?: T;
             };
         projects?:
           | T

@@ -9,8 +9,25 @@ import { text } from "payload/shared";
 
 import { isAgent, ownerOnly, ownerOrAgent } from "../access/roles";
 import { POST_CATEGORIES } from "../lib/post-meta";
+import { isValidSlug, previewUrl } from "../lib/preview";
 import { revalidateSite, shouldRevalidatePost } from "../lib/revalidate";
+import { siteOrigin } from "../lib/seo";
 import { SOCIAL_KEYS, SOCIAL_LABELS } from "../lib/social-icons";
+
+function previewOrigin(req?: { headers?: Headers; host?: string; protocol?: string }): string {
+  const host =
+    req?.headers?.get("x-forwarded-host")?.split(",")[0]?.trim() ||
+    req?.headers?.get("host")?.trim() ||
+    req?.host;
+  if (host) {
+    const proto =
+      req?.headers?.get("x-forwarded-proto")?.split(",")[0]?.trim() ||
+      req?.protocol?.replace(/:$/, "") ||
+      (host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https");
+    return `${proto}://${host}`;
+  }
+  return siteOrigin();
+}
 
 const validateHttps: TextFieldSingleValidation = (value, args) => {
   const base = text(value, args);
@@ -65,6 +82,10 @@ export const Posts: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "publishedAt", "_status"],
+    preview: (doc, { req }) => {
+      if (!isValidSlug(doc?.slug)) return null;
+      return previewUrl(previewOrigin(req), doc.slug);
+    },
   },
   access: {
     create: ownerOrAgent,

@@ -1,9 +1,11 @@
+import { draftMode } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RevealWords } from "@/components/motion-primitives";
 import { Markdown } from "@/components/markdown";
 import { IconX } from "@/components/icons";
 import { MaybeImg, emptyFrame } from "@/components/maybe-img";
+import { PreviewBar } from "@/components/preview-bar";
 import type { Metadata } from "next";
 import { getPost, getPosts, getSiteSettings } from "@/lib/content";
 import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo";
@@ -36,8 +38,9 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { isEnabled } = await draftMode();
   const [post, posts, settings] = await Promise.all([
-    getPost(slug),
+    getPost(slug, isEnabled ? { draft: true } : undefined),
     getPosts(),
     getSiteSettings(),
   ]);
@@ -50,6 +53,9 @@ export default async function PostPage({
 
   return (
     <>
+      {isEnabled ? (
+        <PreviewBar slug={post.slug} label={blog.previewBar} exitLabel={blog.previewExit} />
+      ) : null}
       <section className="flex w-full flex-col items-center pt-36">
         <div className="container-1080 flex flex-col gap-6 pb-12">
           <div className="flex flex-wrap items-center gap-2">
