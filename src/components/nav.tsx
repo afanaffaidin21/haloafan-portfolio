@@ -100,14 +100,15 @@ function DesktopNav({ avatar, name, email }: NavProps) {
 
         <div
           onMouseEnter={() => setOpen(true)}
-          className={`absolute right-3 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center gap-1.5 transition-opacity duration-300 ${
+          className={`nav-dots absolute right-3 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center gap-1.5 transition-opacity duration-300 ${
             open ? "pointer-events-none opacity-0" : "pointer-events-auto opacity-100"
           }`}
+          data-paused={open || undefined}
           aria-hidden
         >
           <span className="block size-1 rounded-full bg-invert" />
-          <span className="block size-1 rounded-full bg-ink-3" />
-          <span className="block size-1 rounded-full bg-ink-4" />
+          <span className="block size-1 rounded-full bg-invert" />
+          <span className="block size-1 rounded-full bg-invert" />
         </div>
       </nav>
     </div>
@@ -180,10 +181,10 @@ export function MobileNav({ avatar, name, email }: NavProps) {
           onClick={() => (open ? close(true) : setOpen(true))}
           className="absolute right-0.5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full"
         >
-          <span className="flex items-center gap-1.5" aria-hidden>
+          <span className="nav-dots flex items-center gap-1.5" aria-hidden>
             <span className="block size-1 rounded-full bg-invert" />
-            <span className="block size-1 rounded-full bg-ink-3" />
-            <span className="block size-1 rounded-full bg-ink-4" />
+            <span className="block size-1 rounded-full bg-invert" />
+            <span className="block size-1 rounded-full bg-invert" />
           </span>
         </button>
       </nav>

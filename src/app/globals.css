@@ -422,11 +422,52 @@
   will-change: transform, opacity, filter;
 }
 
+/* ==========================================================================
+   Nav dots: a typing-indicator wave, each dot rising and darkening in turn
+   ========================================================================== */
+
+.nav-dots > span {
+  opacity: 0.3;
+  animation: nav-dot 1.3s ease-in-out infinite;
+}
+.nav-dots > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.nav-dots > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.nav-dots[data-paused] > span {
+  animation-play-state: paused;
+}
+
+@keyframes nav-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2.5px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal-word {
     filter: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* Static dots keep the original dark-to-light gradient. */
+  .nav-dots > span {
+    animation: none;
+  }
+  .nav-dots > span:nth-child(1) {
+    opacity: 1;
+  }
+  .nav-dots > span:nth-child(2) {
+    opacity: 0.5;
   }
 }
 
